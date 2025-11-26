@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+*.log
+logs/
+*.out
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# IDE files
+.vscode/
+.idea/
+
+# AWS private keys (VERY important)
+*.pem
+*.key
+
+# SSH keys
+id_rsa
+id_rsa.pub
+
+# Build artifacts
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.swp
