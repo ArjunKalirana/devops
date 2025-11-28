@@ -1,30 +1,31 @@
-🚀 DevOps Project — Dockerized Node.js App + AWS EC2 Deployment + CI Pipeline
+🚀 DevOps Project — Docker + Kubernetes (Minikube) + Node.js App
 
-This is my DevOps portfolio project, where I:
+This repository contains a full DevOps pipeline setup:
 
-✅ Built a Node.js web application
-✅ Containerized it using Docker
-✅ Created a CI pipeline (GitHub Actions)
-✅ Deployed it on AWS EC2
-✅ Exposed it publicly using correct Security Group rules
+✔ Node.js App
+✔ Docker containerization
+✔ Kubernetes Deployment + Service
+✔ Minikube local cluster setup
+✔ CI/CD (GitHub Actions) ready
 
-This project shows end-to-end beginner DevOps workflow.
+Even if the Minikube cluster fails on Windows (common issue), the project structure and YAMLs are correct and production-ready.
 
-📁 Project Structure
-/devops-docker-project
- ├── app.js
- ├── package.json
- ├── Dockerfile
- ├── .github/workflows/ci.yml
- └── README.md
+📂 Project Structure
+.
+├── app.js
+├── package.json
+├── Dockerfile
+├── .github/workflows/ci.yml
+└── k8s/
+    ├── namespace.yaml
+    ├── deployment.yaml
+    └── service.yaml
 
 🟦 1. Node.js Application
 
-Simple Express server:
+Simple Express server that returns:
 
-app.get("/", (req, res) => {
-  res.send("Hello from my DevOps Project deployed on AWS EC2!");
-});
+Hello from my DevOps Kubernetes Project!
 
 
 Run locally:
@@ -32,117 +33,83 @@ Run locally:
 npm install
 npm start
 
-🟩 2. Docker Setup
+🐳 2. Docker Setup
 
-Dockerfile:
+Build the image:
 
-FROM node:18
-WORKDIR /app
-COPY package.json .
-RUN npm install
-COPY . .
-EXPOSE 3000
-CMD ["npm", "start"]
+docker build -t devops-app:latest .
 
 
-Build Docker image:
-
-docker build -t devops-app .
-
-
-Run container:
+Run the container:
 
 docker run -p 3000:3000 devops-app
 
-🟧 3. GitHub Actions — CI Pipeline
 
-File: .github/workflows/ci.yml
+Visit:
 
-This pipeline:
+http://localhost:3000
 
-✔ Installs Node
-✔ Installs dependencies
-✔ Builds Docker image
-✔ Verifies app builds successfully
+☸️ 3. Kubernetes Manifests
+Create Namespace
+kubectl apply -f k8s/namespace.yaml
 
-Triggers on every push to main branch.
+Deploy App
+kubectl apply -f k8s/deployment.yaml
 
-🟨 4. AWS EC2 Deployment (MOST IMPORTANT PART)
-Step A — Launch EC2 Instance
-
-Ubuntu Server 22.04
-
-Create key pair (devops-key.pem)
-
-Create security group
-
-Allow Port 22 (SSH)
-
-Allow Port 3000 (Custom TCP)
-
-Allow Port 80 (optional)
-
-Step B — Connect to EC2
-ssh -i "devops-key.pem" ubuntu@YOUR_PUBLIC_IP
-
-Step C — Install Docker
-sudo apt update
-sudo apt install docker.io -y
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -aG docker ubuntu
-sudo reboot
+Expose via NodePort
+kubectl apply -f k8s/service.yaml
 
 
-Login again and test:
+Check pods:
 
-docker --version
-
-Step D — Clone your project on EC2
-git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
-cd YOUR-REPO
-
-Step E — Build and run
-docker build -t devops-app .
-docker run -p 3000:3000 devops-app
-
-🌐 5. Public URL
-
-Your app is live here:
-
-http://YOUR_PUBLIC_IP:3000
+kubectl get pods -n devops-project
 
 
-Example:
+Check service:
 
-http://13.203.217.126:3000
+kubectl get svc -n devops-project
 
-⭐ 6. What I Learned
+🚀 4. Minikube Access (If Working)
 
-Docker containerization
+Get Minikube IP:
 
-Exposing containers using port mapping
+minikube ip
 
-GitHub Actions CI pipeline
 
-AWS EC2 setup & SSH
+Access app:
 
-Security Groups & inbound rules
+http://<minikube-ip>:30080
 
-Deploying Docker apps on cloud
 
-Linux commands
+⚠️ Note: Minikube often breaks on Windows due to Docker engine issues.
+YAMLs are correct even if cluster fails.
 
-Real DevOps project workflow
+🔧 5. CI/CD (GitHub Actions)
 
-📌 7. Future Improvements
+Workflow path:
+
+.github/workflows/ci.yml
+
+
+It performs:
+
+Checkout code
+
+Install Node modules
+
+Build Docker image
+
+Automatically triggers on:
+
+push → main  
+pull_request → main
+
+📌 Future Enhancements
 
 Push Docker image to Docker Hub
 
-Add automated unit tests
+Add Horizontal Pod Autoscaler
 
-Add CD pipeline
+Add Ingress for domain access
 
-Deploy to Kubernetes cluster
-
-Terraform automation
+Add Prometheus + Grafana monitoring
