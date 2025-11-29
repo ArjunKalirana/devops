@@ -1,0 +1,10 @@
+{
+  "archives": {
+    "windows_386": {
+      "hashes": [
+        "h1:WMdBPDu4z8C3SkGowzfQ1nXkKZcsvpzvlwx1qBA1Ggk="
+      ],
+      "url": "terraform-provider-aws_6.23.0_windows_386.zip"
+    }
+  }
+}
