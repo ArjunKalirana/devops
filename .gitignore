@@ -51,3 +51,6 @@ override.tf
 override.tf.json
 *_override.tf
 project4/registry.terraform.io/
+**/terraform.tfstate
+**/terraform.tfstate.*
+registry.terraform.io/
